@@ -17,7 +17,7 @@ A bot designed for personalized recipe recommendations based on user ingredients
 
 2. **Navigate into the directory**:
     ```bash
-    cd juanslife-bot
+    cd juanslife
     ```
 
 3. **Install dependencies**:
