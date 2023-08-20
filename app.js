@@ -2,7 +2,8 @@ var createError = require('http-errors');
 var express = require('express');
 const connectDB = require('./src/config/db');
 const userRoutes = require('./src/routes/userRoutes');
-const errorHandler = require('./src/middlewares/errorMiddleware'); // Ajusta la ruta según donde hayas creado el archivo
+const errorHandler = require('./src/middlewares/errorMiddleware');
+require('dotenv').config();
 
 var app = express();
 connectDB();
