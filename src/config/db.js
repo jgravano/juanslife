@@ -2,11 +2,9 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI, {
+    await mongoose.connect('mongodb://0.0.0.0:27017/juanslife', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
     });
     console.log('MongoDB connected...');
   } catch (error) {
@@ -17,3 +15,4 @@ const connectDB = async () => {
 };
 
 module.exports = connectDB;
+  
