@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Item = require('../models/item');
 
 /**
  * Create a new user.
@@ -82,6 +83,62 @@ exports.deleteUser = async (req, res, next) => {
         }
 
         res.status(204).send(); // No content
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.addItemsToUser = async (req, res, next) => {
+    const userId = req.params.id;
+    const itemsToBeAdded = req.body.items;
+
+    try {
+        let user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).send({ message: 'User not found' });
+        }
+
+        for (let itemName of itemsToBeAdded) {
+            let item = await Item.findOne({ name: itemName.toLowerCase().trim() });
+
+            if (!item) {
+                item = await Item.create({ name: itemName });
+            }
+
+            if (!user.items.includes(item._id)) {
+                user.items.push(item._id);
+            }
+        }
+
+        await user.save();
+        res.status(200).send(user);
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.removeItemsFromUser = async (req, res, next) => {
+    const userId = req.params.id;
+    const itemsToBeRemoved = req.body.items;
+
+    try {
+        let user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).send({ message: 'User not found' });
+        }
+
+        for (let itemName of itemsToBeRemoved) {
+            let item = await Item.findOne({ name: itemName.toLowerCase().trim() });
+
+            if (item && user.items.includes(item._id)) {
+                user.items.pull(item._id);
+            }
+        }
+
+        await user.save();
+        res.status(200).send(user);
+
     } catch (error) {
         next(error);
     }
