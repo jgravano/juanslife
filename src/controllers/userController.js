@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const Item = require('../models/item');
+const { transformModel } = require('../utils/utils')
 
 /**
  * Create a new user.
@@ -8,7 +9,8 @@ exports.createUser = async (req, res, next) => {
     const user = new User(req.body);
     try {
         await user.save();
-        res.status(201).json({ success: true, data: user });
+        const transformedUser = transformModel(user);
+        res.status(201).json({ success: true, data: transformedUser });
     } catch (error) {
         next(error);
     }
@@ -33,12 +35,12 @@ exports.getUserById = async (req, res, next) => {
     const { id } = req.params;
     try {
         const user = await User.findById(id);
-        
+
         if (!user) {
             const error = new Error('User not found');
             error.status = 404;
             return next(error);
-        }        
+        }
 
         res.status(200).json({ success: true, data: user });
     } catch (error) {
@@ -55,7 +57,7 @@ exports.updateUser = async (req, res, next) => {
 
     try {
         const updatedUser = await User.findByIdAndUpdate(id, { name, items }, {
-            new: true, 
+            new: true,
             runValidators: true
         });
 
@@ -77,7 +79,7 @@ exports.deleteUser = async (req, res, next) => {
 
     try {
         const user = await User.findByIdAndDelete(id);
-        
+
         if (!user) {
             return res.status(404).json({ success: false, message: 'User not found' });
         }
