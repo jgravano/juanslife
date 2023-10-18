@@ -12,7 +12,7 @@ A bot designed for personalized recipe recommendations based on user ingredients
 
 1. **Clone the repository**:
     ```bash
-    git clone [repo_url]
+    git clone git@github.com:jgravano/juanslife.git
     ```
 
 2. **Navigate into the directory**:
